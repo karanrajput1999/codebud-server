@@ -6,13 +6,9 @@ const bcrypt = require("bcrypt");
 const Joi = require("joi");
 
 const schema = Joi.object({
-  username: Joi.string()
-    .min(3, "username must be at least 3 chars long!")
-    .required(),
-  email: Joi.email().required(),
-  password: Joi.string()
-    .min(3, "username must be at least 3 chars long!")
-    .required(),
+  username: Joi.string().min(3).required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(3).required(),
 });
 
 signupRouter.post("/", async (req, res) => {
@@ -22,7 +18,10 @@ signupRouter.post("/", async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  console.log("Schema result", schemaResult);
+  if (schemaResult.error) {
+    res.send(schemaResult.error.message);
+    return;
+  }
 
   const newUser = await prisma.user.create({
     data: { username, email, password: hashedPassword },
