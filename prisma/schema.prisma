@@ -17,4 +17,5 @@ model User {
   password String
   questions String[] @default([])
   answers String[] @default([])
+  reputation Int @default(0)
 }
