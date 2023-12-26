@@ -1,6 +1,5 @@
 const bcrypt = require("bcrypt");
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const prisma = require("../prisma/prismaClient");
 const jwt = require("jsonwebtoken");
 
 class LoginController {
@@ -43,15 +42,24 @@ class LoginController {
       const cookies = req.cookies["auth_token"];
 
       // verifyToken is id of the user
-      const verifyToken = jwt.verify(cookies, process.env.JWT_SECRET);
+      const verifyToken =
+        cookies && jwt.verify(cookies, process.env.JWT_SECRET);
 
       if (verifyToken) {
         const loggedInUser = await prisma.user.findFirst({
           where: { id: verifyToken },
+          include: {
+            questions: true,
+          },
         });
 
+        if (!loggedInUser) {
+          res.status(404).send("User not found");
+          return;
+        }
+
         const { password, ...otherUserDetails } = loggedInUser;
-        res.send(otherUserDetails);
+        res.status(200).send(otherUserDetails);
       } else {
         res.end();
       }
