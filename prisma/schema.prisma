@@ -31,7 +31,7 @@ model Question {
   upvote String[] @default([])
   downvote String[] @default([])
   acceptedAnswer String @default("")
-  views String[] @default([])
+  views Int @default(0)
   tags String[] @default([])
   createdAt DateTime @default(now())
   updated DateTime @updatedAt @default(now())

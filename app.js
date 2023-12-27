@@ -7,6 +7,7 @@ const signupRouter = require("./routes/signup");
 const loginRouter = require("./routes/login");
 const questionRouter = require("./routes/question");
 const homepageRouter = require("./routes/homepage");
+const upvoteDownvoteRouter = require("./routes/upvoteDownvote");
 const app = express();
 
 app.use(express.json());
@@ -34,6 +35,8 @@ app.use(cookieParser());
 app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
 app.use("/questions/ask", questionRouter);
+app.use("/questions/:id", questionRouter);
+app.use("/questions/:id", upvoteDownvoteRouter);
 app.use("/homepage", homepageRouter);
 
 app.listen(process.env.PORT, () => {

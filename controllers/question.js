@@ -19,7 +19,23 @@ class QuestionController {
       console.log("new question created", newQuestion);
       res.status(200).send(newQuestion);
     } catch (error) {
-      console.log("Error in question controller", error);
+      console.log("Error in question controller post request", error);
+    }
+  }
+  async questionGet(req, res) {
+    try {
+      const { id } = req.params;
+      const question = await prisma.question.findFirst({ where: { id } });
+
+      // increase question view count
+      await prisma.question.update({
+        where: { id },
+        data: { views: { increment: 1 } },
+      });
+
+      res.status(200).send(question);
+    } catch (error) {
+      console.log("Error in question controller get request", error);
     }
   }
 }
