@@ -8,6 +8,7 @@ const loginRouter = require("./routes/login");
 const questionRouter = require("./routes/question");
 const homepageRouter = require("./routes/homepage");
 const upvoteDownvoteRouter = require("./routes/upvoteDownvote");
+const commentRouter = require("./routes/comment");
 const app = express();
 
 app.use(express.json());
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PATCH", "DELETE"],
     credentials: true,
   })
 );
@@ -37,6 +39,7 @@ app.use("/login", loginRouter);
 app.use("/questions/ask", questionRouter);
 app.use("/questions/:id", questionRouter);
 app.use("/questions/:id", upvoteDownvoteRouter);
+app.use("/questions/:id/comment", commentRouter);
 app.use("/homepage", homepageRouter);
 
 app.listen(process.env.PORT, () => {

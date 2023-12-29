@@ -27,13 +27,17 @@ class QuestionController {
       const { id } = req.params;
       const question = await prisma.question.findFirst({ where: { id } });
 
-      // increase question view count
-      await prisma.question.update({
-        where: { id },
-        data: { views: { increment: 1 } },
-      });
+      if (question) {
+        // increase question view count
+        await prisma.question.update({
+          where: { id },
+          data: { views: { increment: 1 } },
+        });
 
-      res.status(200).send(question);
+        res.status(200).send(question);
+      } else {
+        res.send("no questions found");
+      }
     } catch (error) {
       console.log("Error in question controller get request", error);
     }
