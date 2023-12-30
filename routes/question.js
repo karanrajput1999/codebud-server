@@ -10,5 +10,6 @@ questionRouter.post(
   QuestionController.questionPost
 );
 questionRouter.get("/", QuestionController.questionGet);
+questionRouter.delete("/", QuestionController.questionDelete);
 
 module.exports = questionRouter;

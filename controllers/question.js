@@ -56,6 +56,35 @@ class QuestionController {
       console.log("Error in question controller get request", error);
     }
   }
+
+  async questionDelete(req, res) {
+    try {
+      const { id } = req.params;
+
+      const cookies = req.cookies["auth_token"];
+
+      // verifyToken is id of the user
+      const verifyToken =
+        cookies && jwt.verify(cookies, process.env.JWT_SECRET);
+
+      const question = await prisma.question.findFirst({ where: { id } });
+
+      if (verifyToken) {
+        if (verifyToken === question.userId) {
+          await prisma.question.delete({ where: { id } });
+          res.status(200).send("Question deleted");
+        } else {
+          res
+            .status(401)
+            .send("You do not have permission to delete this question");
+        }
+      } else {
+        res.status(404).send("user not found!");
+      }
+    } catch (error) {
+      console.log("Error in question controller delete request", error);
+    }
+  }
 }
 
 module.exports = new QuestionController();
