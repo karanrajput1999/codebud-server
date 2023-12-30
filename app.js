@@ -9,6 +9,8 @@ const questionRouter = require("./routes/question");
 const homepageRouter = require("./routes/homepage");
 const upvoteDownvoteRouter = require("./routes/upvoteDownvote");
 const commentRouter = require("./routes/comment");
+const editQuestionRouter = require("./routes/editQuestion");
+
 const app = express();
 
 app.use(express.json());
@@ -39,6 +41,7 @@ app.use("/login", loginRouter);
 app.use("/questions/ask", questionRouter);
 app.use("/questions/:id", questionRouter);
 app.use("/questions/:id", upvoteDownvoteRouter);
+app.use("/questions/:id/edit", editQuestionRouter);
 app.use("/questions/:id/comment", commentRouter);
 app.use("/homepage", homepageRouter);
 

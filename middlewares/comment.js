@@ -6,7 +6,7 @@ class CommentValidator {
       const { commentText } = req.body;
 
       const schema = Joi.object({
-        commentText: Joi.string().min(20),
+        commentText: Joi.string().min(15),
       });
 
       const schemaResult = schema.validate({

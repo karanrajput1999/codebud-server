@@ -25,7 +25,21 @@ class QuestionController {
   async questionGet(req, res) {
     try {
       const { id } = req.params;
-      const question = await prisma.question.findFirst({ where: { id } });
+      const question = await prisma.question.findFirst({
+        where: { id },
+        include: {
+          comments: {
+            include: {
+              user: {
+                select: {
+                  id: true,
+                  username: true,
+                },
+              },
+            },
+          },
+        },
+      });
 
       if (question) {
         // increase question view count
