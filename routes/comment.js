@@ -8,5 +8,7 @@ commentRouter.post(
   CommentValidator.commentPost,
   CommentController.commentPost
 );
+commentRouter.delete("/:commentId", CommentController.commentDelete);
+commentRouter.patch("/:commentId", CommentController.commentPatch);
 
 module.exports = commentRouter;

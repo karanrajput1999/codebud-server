@@ -53,8 +53,6 @@ class LoginController {
           },
         });
 
-        console.log("this one came from login", verifyToken);
-        // console.log("this one came from login too", );
         if (!loggedInUser) {
           res.status(404).send("User not found");
           return;

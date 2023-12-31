@@ -38,6 +38,7 @@ class QuestionController {
               },
             },
           },
+          user: true,
         },
       });
 
