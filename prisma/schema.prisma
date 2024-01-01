@@ -16,7 +16,7 @@ model User {
   password String
   comments Comment[] 
   questions Question[] 
-  answers String[] @default([])
+  answers Answer[] 
   reputation Int @default(0)
   createdAt DateTime @default(now())
   updated DateTime @updatedAt @default(now())
@@ -28,7 +28,8 @@ model Question {
   userId String 
   title String
   bodyText String
-  comments Comment[] 
+  comments Comment[]
+  answers Answer[]
   upvote String[] @default([])
   downvote String[] @default([])
   acceptedAnswer String @default("")
@@ -40,10 +41,27 @@ model Question {
 }
 
 
+model Answer{
+  id String @id @default(uuid())
+  user User  @relation(fields: [userId], references: [id])
+  userId String 
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String 
+  bodyText String
+  comments Comment[] 
+  upvote String[] @default([])
+  downvote String[] @default([])
+  createdAt DateTime @default(now())
+  updated DateTime @updatedAt @default(now())
+}
+
+
 model Comment {
   id String @id @default(uuid())
-  post Question @relation(fields: [postId], references: [id], onDelete: Cascade)
+  question Question? @relation(fields: [postId], references: [id], onDelete: Cascade, map: "question")
+  answer Answer? @relation(fields: [postId], references: [id], onDelete: Cascade, map: "answer" )
   postId String
+  answerId String
   user User @relation(fields: [userId], references: [id] ) 
   userId String 
   commentText String

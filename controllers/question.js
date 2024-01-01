@@ -39,6 +39,16 @@ class QuestionController {
             },
           },
           user: true,
+          answers: {
+            include: {
+              user: {
+                select: {
+                  id: true,
+                  username: true,
+                },
+              },
+            },
+          },
         },
       });
 
