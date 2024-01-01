@@ -31,6 +31,34 @@ class AnswerController {
       console.log("error in answerPost controller", error);
     }
   }
+  async answerDelete(req, res) {
+    try {
+      const { bodyText } = req.body;
+
+      // question id
+      const { answerId } = req.params;
+
+      const cookies = req.cookies["auth_token"];
+
+      // verifyToken is id of the user
+      const verifyToken =
+        cookies && jwt.verify(cookies, process.env.JWT_SECRET);
+
+      if (verifyToken) {
+        const quesitonToBeDeleted = await prisma.answer.delete({
+          where: {
+            id: answerId,
+          },
+        });
+
+        res.status(201).send(quesitonToBeDeleted);
+      } else {
+        res.status(404).send("User not found!");
+      }
+    } catch (error) {
+      console.log("error in answerDelete controller", error);
+    }
+  }
 }
 
 module.exports = new AnswerController();
