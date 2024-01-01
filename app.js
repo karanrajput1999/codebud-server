@@ -10,6 +10,7 @@ const homepageRouter = require("./routes/homepage");
 const upvoteDownvoteRouter = require("./routes/upvoteDownvote");
 const commentRouter = require("./routes/comment");
 const editQuestionRouter = require("./routes/editQuestion");
+const answerRouter = require("./routes/answer");
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
 
 app.use(cookieParser());
 
+app.use("/homepage", homepageRouter);
 app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
 app.use("/questions/ask", questionRouter);
@@ -43,7 +45,7 @@ app.use("/questions/:id", questionRouter);
 app.use("/questions/:id", upvoteDownvoteRouter);
 app.use("/questions/:id/edit", editQuestionRouter);
 app.use("/questions/:id/comment", commentRouter);
-app.use("/homepage", homepageRouter);
+app.use("/questions/:id/answer", answerRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(

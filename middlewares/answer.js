@@ -1,20 +1,16 @@
 const Joi = require("joi");
 
-class QuestionValidator {
-  async questionPost(req, res, next) {
+class AnswerValidator {
+  async answerPost(req, res, next) {
     try {
-      const { title, bodyText, tags } = req.body;
+      const { bodyText } = req.body;
 
       const schema = Joi.object({
-        title: Joi.string().min(20).required(),
         bodyText: Joi.string().min(40).required(),
-        tags: Joi.array().min(1).required(),
       });
 
       const schemaResult = schema.validate({
-        title,
         bodyText,
-        tags,
       });
 
       if (schemaResult.error) {
@@ -23,9 +19,9 @@ class QuestionValidator {
         next();
       }
     } catch (error) {
-      console.log("error in questionPost middleware", error);
+      console.log("error in answer middleware", error);
     }
   }
 }
 
-module.exports = new QuestionValidator();
+module.exports = new AnswerValidator();

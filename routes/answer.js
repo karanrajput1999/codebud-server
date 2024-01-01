@@ -1,0 +1,8 @@
+const express = require("express");
+const answerRouter = express.Router({ mergeParams: true });
+const AnswerValidator = require("../middlewares/answer");
+const AnswerController = require("../controllers/answer");
+
+answerRouter.post("/", AnswerValidator.answerPost, AnswerController.answerPost);
+
+module.exports = answerRouter;

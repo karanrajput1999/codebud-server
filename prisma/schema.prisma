@@ -49,5 +49,4 @@ model Comment {
   commentText String
   createdAt DateTime @default(now())
   updated DateTime @updatedAt @default(now())
-
 }
