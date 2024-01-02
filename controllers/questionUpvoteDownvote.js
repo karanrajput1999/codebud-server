@@ -1,7 +1,7 @@
 const prisma = require("../prisma/prismaClient");
 const jwt = require("jsonwebtoken");
 
-class UpvoteDownvoteController {
+class QuestionUpvoteDownvoteController {
   async upvotePatch(req, res) {
     try {
       const { id } = req.params;
@@ -53,7 +53,7 @@ class UpvoteDownvoteController {
       }
     } catch (error) {
       console.log(
-        "Error in upvoteDownvote controller patch request while upvoting",
+        "Error in questionUpvoteDownvote controller patch request while upvoting",
         error
       );
     }
@@ -108,11 +108,11 @@ class UpvoteDownvoteController {
       }
     } catch (error) {
       console.log(
-        "Error in upvoteDownvote controller patch request while upvoting",
+        "Error in questionUpvoteDownvote controller patch request while downvoting",
         error
       );
     }
   }
 }
 
-module.exports = new UpvoteDownvoteController();
+module.exports = new QuestionUpvoteDownvoteController();

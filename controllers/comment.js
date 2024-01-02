@@ -20,8 +20,6 @@ class CommentController {
       } else {
         res.status(404).send("User not found");
       }
-
-      commentText;
     } catch (error) {
       console.log("got error in comment controller commentPost", error);
     }

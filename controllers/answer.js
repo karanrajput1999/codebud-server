@@ -21,6 +21,9 @@ class AnswerController {
             questionId: id,
             userId: verifyToken,
           },
+          include: {
+            user: true,
+          },
         });
 
         res.status(201).send(answer);
@@ -33,8 +36,6 @@ class AnswerController {
   }
   async answerDelete(req, res) {
     try {
-      const { bodyText } = req.body;
-
       // question id
       const { answerId } = req.params;
 

@@ -7,10 +7,12 @@ const signupRouter = require("./routes/signup");
 const loginRouter = require("./routes/login");
 const questionRouter = require("./routes/question");
 const homepageRouter = require("./routes/homepage");
-const upvoteDownvoteRouter = require("./routes/upvoteDownvote");
+const questionUpvoteDownvoteRouter = require("./routes/questionUpvoteDownvote");
+const answerUpvoteDownvoteRouter = require("./routes/answerUpvoteDownvote");
 const commentRouter = require("./routes/comment");
 const editQuestionRouter = require("./routes/editQuestion");
 const answerRouter = require("./routes/answer");
+const editAnswerRouter = require("./routes/editAnswer");
 
 const app = express();
 
@@ -42,10 +44,13 @@ app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
 app.use("/questions/ask", questionRouter);
 app.use("/questions/:id", questionRouter);
-app.use("/questions/:id", upvoteDownvoteRouter);
+app.use("/questions/:id", questionUpvoteDownvoteRouter);
 app.use("/questions/:id/edit", editQuestionRouter);
 app.use("/questions/:id/comment", commentRouter);
 app.use("/questions/:id/answer", answerRouter);
+// app.use("/questions/:id/answer/:answerId/edit", answerUpvoteDownvoteRouter);
+app.use("/questions/:id/answer/:answerId", answerUpvoteDownvoteRouter);
+app.use("/questions/:id/answer/:answerId/edit", editAnswerRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(
