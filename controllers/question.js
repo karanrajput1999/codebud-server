@@ -17,7 +17,7 @@ class QuestionController {
       });
 
       console.log("new question created", newQuestion);
-      res.status(200).send(newQuestion);
+      res.status(201).send(newQuestion);
     } catch (error) {
       console.log("Error in question controller post request", error);
     }

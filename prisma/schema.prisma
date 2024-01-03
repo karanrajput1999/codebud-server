@@ -24,7 +24,7 @@ model User {
 
 model Question {
   id String @id @default(uuid())
-  user User  @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
   userId String 
   title String
   bodyText String
@@ -62,7 +62,7 @@ model Comment {
   answer Answer? @relation(fields: [answerId], references: [id], onDelete: Cascade, map: "answer" )
   postId String
   answerId String
-  user User @relation(fields: [userId], references: [id] ) 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, map: "user") 
   userId String 
   commentText String
   createdAt DateTime @default(now())
