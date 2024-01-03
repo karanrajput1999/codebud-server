@@ -5,26 +5,43 @@ class CommentController {
   async commentPost(req, res) {
     try {
       const { commentText } = req.body;
+      console.log("commentText here ->", commentText);
       const { id } = req.params;
+      console.log("question id here ->", id);
+
       const cookies = req.cookies["auth_token"];
 
       // verifyToken is id of the user
       const verifyToken =
         cookies && jwt.verify(cookies, process.env.JWT_SECRET);
 
+      console.log("cookies here -> ", verifyToken);
+
       if (verifyToken) {
-        console.log("this is user id while creating comment", verifyToken);
+        console.log("yes this user is logged in");
+
         const comment = await prisma.comment.create({
-          data: {
-            commentText,
-            userId: verifyToken,
-            postId: id,
+          data: { commentText, userId: verifyToken },
+          include: {
+            user: true,
           },
         });
-        res.status(201).send(comment);
-      } else {
-        res.status(404).send("User not found");
       }
+
+      // if (verifyToken) {
+      //   console.log("this is user id while creating comment", verifyToken);
+      //   const comment = await prisma.comment.create({
+      //     data: {
+      //       commentText,
+      //       userId: verifyToken,
+      //       postId: id,
+      //     },
+      //   });
+      //   res.status(201).send(comment);
+      // } else {
+      //   res.status(404).send("User not found");
+      // }
+      res.send("ok");
     } catch (error) {
       console.log("got error in comment controller commentPost", error);
     }

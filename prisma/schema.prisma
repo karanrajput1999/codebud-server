@@ -28,7 +28,7 @@ model Question {
   userId String 
   title String
   bodyText String
-  comments Comment[]
+  comments Comment[] 
   answers Answer[]
   upvote String[] @default([])
   downvote String[] @default([])
@@ -60,9 +60,9 @@ model Comment {
   id String @id @default(uuid())
   question Question? @relation(fields: [postId], references: [id], onDelete: Cascade, map: "question")
   answer Answer? @relation(fields: [answerId], references: [id], onDelete: Cascade, map: "answer" )
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, map: "user") 
   postId String
   answerId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade, map: "user") 
   userId String 
   commentText String
   createdAt DateTime @default(now())
