@@ -9,6 +9,10 @@ questionRouter.post(
   QuestionValidator.questionPost,
   QuestionController.questionPost
 );
+questionRouter.post(
+  "/accept-answer",
+  QuestionController.questionAcceptAnswerPost
+);
 questionRouter.get("/", QuestionController.questionGet);
 questionRouter.delete("/", QuestionController.questionDelete);
 

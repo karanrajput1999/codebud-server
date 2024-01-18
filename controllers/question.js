@@ -22,6 +22,43 @@ class QuestionController {
       console.log("Error in question controller post request", error);
     }
   }
+  async questionAcceptAnswerPost(req, res) {
+    try {
+      const { answerId } = req.body;
+      const { id } = req.params;
+      const cookies = req.cookies["auth_token"];
+
+      // verifyToken is id of the user
+      const verifyToken =
+        cookies && jwt.verify(cookies, process.env.JWT_SECRET);
+
+      const alreadyAccepted = await prisma.question.findFirst({
+        where: { id, acceptedAnswer: answerId },
+      });
+
+      console.log("already accepted ? => ", verifyToken);
+
+      if (verifyToken) {
+        if (alreadyAccepted) {
+          await prisma.question.update({
+            where: { id },
+            data: { acceptedAnswer: "" },
+          });
+          res.status(201).send("answer unaccepted!");
+        } else {
+          await prisma.question.update({
+            where: { id },
+            data: { acceptedAnswer: answerId },
+          });
+          res.status(201).send("answer accepted!");
+        }
+      } else {
+        res.status(404).send("user not found!");
+      }
+    } catch (error) {
+      console.log("Error in question controller post request", error);
+    }
+  }
   async questionGet(req, res) {
     try {
       const { id } = req.params;
@@ -45,6 +82,16 @@ class QuestionController {
                 select: {
                   id: true,
                   username: true,
+                },
+              },
+              comments: {
+                include: {
+                  user: {
+                    select: {
+                      id: true,
+                      username: true,
+                    },
+                  },
                 },
               },
             },

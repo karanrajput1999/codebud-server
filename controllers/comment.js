@@ -5,9 +5,7 @@ class CommentController {
   async commentPost(req, res) {
     try {
       const { commentText } = req.body;
-      console.log("commentText here ->", commentText);
-      const { id } = req.params;
-      console.log("question id here ->", id);
+      const { id, answerId } = req.params;
 
       const cookies = req.cookies["auth_token"];
 
@@ -15,33 +13,51 @@ class CommentController {
       const verifyToken =
         cookies && jwt.verify(cookies, process.env.JWT_SECRET);
 
-      console.log("cookies here -> ", verifyToken);
-
-      if (verifyToken) {
-        console.log("yes this user is logged in");
-
-        const comment = await prisma.comment.create({
-          data: { commentText, userId: verifyToken },
-          include: {
-            user: true,
-          },
-        });
+      if (answerId) {
+        return;
       }
 
-      // if (verifyToken) {
-      //   console.log("this is user id while creating comment", verifyToken);
-      //   const comment = await prisma.comment.create({
-      //     data: {
-      //       commentText,
-      //       userId: verifyToken,
-      //       postId: id,
-      //     },
-      //   });
-      //   res.status(201).send(comment);
-      // } else {
-      //   res.status(404).send("User not found");
-      // }
-      res.send("ok");
+      if (verifyToken) {
+        const comment = await prisma.comment.create({
+          data: {
+            commentText,
+            userId: verifyToken,
+            postId: id,
+          },
+        });
+        res.status(201).send(comment);
+      } else {
+        res.status(404).send("User not found");
+      }
+    } catch (error) {
+      console.log("got error in comment controller commentPost", error);
+    }
+  }
+  async answerCommentPost(req, res) {
+    try {
+      const { commentText, answerId } = req.body;
+
+      const cookies = req.cookies["auth_token"];
+
+      console.log("answer comment post called", answerId);
+
+      // verifyToken is id of the user
+      const verifyToken =
+        cookies && jwt.verify(cookies, process.env.JWT_SECRET);
+
+      if (verifyToken) {
+        const comment = await prisma.comment.create({
+          data: {
+            commentText,
+            userId: verifyToken,
+            answerId,
+          },
+        });
+        console.log("commented on answer -> ", comment);
+        res.status(201).send(comment);
+      } else {
+        res.status(404).send("User not found");
+      }
     } catch (error) {
       console.log("got error in comment controller commentPost", error);
     }

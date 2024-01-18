@@ -59,11 +59,11 @@ model Answer{
 model Comment {
   id String @id @default(uuid())
   question Question? @relation(fields: [postId], references: [id], onDelete: Cascade, map: "question")
+  postId String?
   answer Answer? @relation(fields: [answerId], references: [id], onDelete: Cascade, map: "answer" )
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade, map: "user") 
-  postId String
-  answerId String
-  userId String 
+  answerId String?
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade) 
+  userId String
   commentText String
   createdAt DateTime @default(now())
   updated DateTime @updatedAt @default(now())
